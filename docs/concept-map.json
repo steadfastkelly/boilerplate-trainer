@@ -1,0 +1,171 @@
+{
+  "figma_file_key": "u2ZUi1cEngp5ZdfVWBwcKJ",
+  "version_label": "Boilerplate - Playground (Kelly) v5.2",
+  "generated": "2026-07-06",
+  "status": "draft-for-review",
+  "schema_notes": "Matches the plan's concepts schema (id, title, slug, summary, order, prerequisites). Adds fields Kelly approved or the scope requires: why (the reasoning the file alone can't teach), source (where each concept is grounded), track, and plugin_checks (which Boilerplate Assistant checks the concept feeds).",
+  "operating_principles": [
+    "Keep components intact. Build with the boilerplate's components as they are. Restructure or detach only when you must, do it the light way, and comment it.",
+    "Everything lives in AutoLayout. Components are placed and spaced inside AutoLayout, always. A layout that isn't in AutoLayout can't feed the handoff."
+  ],
+  "principles_note": "These two principles are not standalone concepts. They are woven into every concept's lessons and every exercise's self-check, per Kelly's directive to anchor all teaching to the fundamentals.",
+  "tracks": [
+    {
+      "id": "using",
+      "title": "Using the boilerplate",
+      "summary": "Build a page in a Working file that passes the Boilerplate Assistant at 0 errors. Eight concepts. This track ships first."
+    },
+    {
+      "id": "setup",
+      "title": "Setting up a boilerplate",
+      "summary": "Duplicate the template and customize it for a new brand. Four concepts. A later track, taken after the using track."
+    }
+  ],
+  "source_vocabulary": ["figma-file", "slab", "carson-notes", "autolayout-deck", "kelly-interview", "needs-confirmation"],
+  "concepts": [
+    {
+      "id": "why-boilerplate-exists",
+      "track": "using",
+      "title": "Why the boilerplate exists",
+      "slug": "why-boilerplate-exists",
+      "summary": "Steadfast designs in Figma and builds in Craft CMS, and the boilerplate makes that handoff close to 1:1. A designed section becomes clean, fillable content in Craft instead of a guessing game for the developer. Two rules hold from here on: keep the components intact, and build everything inside AutoLayout.",
+      "why": "This is the concept that has to win over the designer who would rather freestyle. If she doesn't believe structure is what makes the handoff work, nothing after this lands. The two operating principles get introduced here so every later concept can point back to them.",
+      "order": 1,
+      "prerequisites": [],
+      "plugin_checks": [],
+      "source": ["kelly-interview", "slab", "figma-file"]
+    },
+    {
+      "id": "autolayout-and-page-structure",
+      "track": "using",
+      "title": "AutoLayout and page structure",
+      "slug": "autolayout-and-page-structure",
+      "summary": "A page is an AutoLayout tree: start inside a width frame (1440 desktop, 768 tablet, 400 mobile), then nest and name Viewport, Section, Row, Column so page-home > content > row-1 reads straight across to the developer's HTML. Correct order, nesting, and the width frame are two of the plugin's checks.",
+      "why": "AutoLayout is how a designer replicates code inside Figma, and the developer reads your layer names to write the markup. This concept is where the two principles become concrete: nothing sits outside AutoLayout, and the structure you name is the structure they build.",
+      "order": 2,
+      "prerequisites": ["why-boilerplate-exists"],
+      "plugin_checks": ["page-width-frame", "correct-nesting-and-order"],
+      "source": ["autolayout-deck", "carson-notes", "figma-file", "kelly-interview"]
+    },
+    {
+      "id": "spacers-and-spacing",
+      "track": "using",
+      "title": "Spacers and spacing",
+      "slug": "spacers-and-spacing",
+      "summary": "Space between elements comes from spacers on a 14-step scale, sp-1 (4px) through sp-14 (160px), bound to variables rather than typed as raw numbers. Spacers show only with layout grids on (Shift+G). Arbitrary frame heights used as spacing fail the plugin. Follow Carson's current practice for when to use a spacer component versus a spacer variable.",
+      "why": "A spacer is like letterpress lead: a fixed scale both teams share is what shaved hours off review and made spacing repeatable. A bound variable is a word the developer already has in code; a typed number is a dead end they have to reverse-engineer.",
+      "order": 3,
+      "prerequisites": ["autolayout-and-page-structure"],
+      "plugin_checks": ["spacer-components"],
+      "source": ["figma-file", "slab", "carson-notes", "kelly-interview"]
+    },
+    {
+      "id": "typography",
+      "track": "using",
+      "title": "Typography",
+      "slug": "typography",
+      "summary": "All type comes from the text component, never a raw text node. The heading scale carries roles, from h1-super for a hero callout down to h6 for captions, and maps to semantic HTML. Each component holds an ascender-offset that keeps the space above text matching between Figma and the browser. Never delete or detach it.",
+      "why": "The component locks size, line height, and weight to the developer's type scale and carries the optical offset. Raw text or a detached component skips all of that and breaks the match, which is why the plugin fails it. Keeping the component intact is the first operating principle in action.",
+      "order": 4,
+      "prerequisites": ["spacers-and-spacing"],
+      "plugin_checks": ["text-components"],
+      "source": ["figma-file", "slab", "carson-notes", "kelly-interview"]
+    },
+    {
+      "id": "buttons-and-icons",
+      "track": "using",
+      "title": "Buttons and icons",
+      "slug": "buttons-and-icons",
+      "summary": "Every interactive element uses button-base in Small (36px), Medium (44px), or Large (61px). Medium meets the WCAG 44px touch target. Icons split into icon-ui for interface actions and icon-social for brand logos, and the two never mix.",
+      "why": "button-base carries the height, padding, radius, and icon slots the developer's component already has. A rectangle with text on top gives them none of that and, at the small size, quietly ships an accessibility failure. Use the component as built.",
+      "order": 5,
+      "prerequisites": ["autolayout-and-page-structure"],
+      "plugin_checks": ["button-components"],
+      "source": ["figma-file", "slab", "carson-notes"]
+    },
+    {
+      "id": "effects",
+      "track": "using",
+      "title": "Effects",
+      "slug": "effects",
+      "summary": "Shadows, background blur, layer blur, and glass each come from defined effect styles with a named CSS equivalent. Use only these variants, and change the variable behind a style, never the style itself.",
+      "why": "A custom shadow is a value the developer has no token for, so the built element drifts from the design. The named effect is what keeps depth and blur identical across the handoff.",
+      "order": 6,
+      "prerequisites": ["autolayout-and-page-structure"],
+      "plugin_checks": ["effect-styles"],
+      "source": ["figma-file", "carson-notes"]
+    },
+    {
+      "id": "building-without-breaking",
+      "track": "using",
+      "title": "Building without breaking",
+      "slug": "building-without-breaking",
+      "summary": "Keep components in their original structure while you build. When you truly must deviate, disconnect a single variable rather than detach the whole component, and comment the break with what and why. For a background that needs to bleed outside a section, use a zero-height container so AutoLayout stays intact.",
+      "why": "This concept is the first operating principle taught head-on. A break the developer can't see becomes a bug, so the comment is the handoff note that keeps a deviation intentional, and the zero-height trick is how you get atmosphere without breaking the structure the handoff depends on.",
+      "order": 7,
+      "prerequisites": ["typography", "buttons-and-icons", "effects"],
+      "plugin_checks": [],
+      "source": ["carson-notes", "kelly-interview"]
+    },
+    {
+      "id": "capstone-use",
+      "track": "using",
+      "title": "Capstone: build a page that passes",
+      "slug": "capstone-use",
+      "summary": "Rebuild a provided reference design using only boilerplate components, inside AutoLayout, in the right width frame, with spacers, text components, buttons, and defined effects, correctly nested and named. It passes when the Boilerplate Assistant reports 0 structural errors.",
+      "why": "Passing the plugin is the definition of using the boilerplate correctly. This is the moment a designer proves she can hand off clean work with no walkthrough, which is the whole point of the course.",
+      "order": 8,
+      "prerequisites": ["autolayout-and-page-structure", "spacers-and-spacing", "typography", "buttons-and-icons", "effects", "building-without-breaking"],
+      "plugin_checks": ["all-six"],
+      "source": ["figma-file", "kelly-interview"]
+    },
+    {
+      "id": "duplicate-and-set-up",
+      "track": "setup",
+      "title": "Duplicate the template and set up files",
+      "slug": "duplicate-and-set-up",
+      "summary": "Start a new brand by duplicating the Boilerplate Template, renaming it [Brand] Boilerplate with the version number, and pairing it with the brand Styles file. Never start a website design without a boilerplate in place first.",
+      "why": "The template is the blank, protected starting point. Duplicating rather than editing the master is what keeps every project's boilerplate consistent and safe to update, which is the same keep-it-intact instinct applied at the file level.",
+      "order": 9,
+      "prerequisites": ["capstone-use"],
+      "plugin_checks": [],
+      "source": ["carson-notes", "slab"]
+    },
+    {
+      "id": "customize-type",
+      "track": "setup",
+      "title": "Customize the type",
+      "slug": "customize-type",
+      "summary": "Set font-families with the brand fonts (exact Figma style strings) and email-safe websafe fallbacks, run the typography audit to decide which level plays which role, then set type-styles per breakpoint, including the ascender-offset and default spacer for each level.",
+      "why": "This is where the brand's type becomes system tokens. Getting the exact font strings and level roles right is what stops broken references downstream and keeps the whole site consistent and quick to build.",
+      "order": 10,
+      "prerequisites": ["duplicate-and-set-up", "typography"],
+      "plugin_checks": [],
+      "source": ["carson-notes", "figma-file"]
+    },
+    {
+      "id": "customize-spacing-and-effects",
+      "track": "setup",
+      "title": "Customize spacing and effects",
+      "slug": "customize-spacing-and-effects",
+      "summary": "Tune button sizing in size+spacing and the presets in effects to fit the brand. When you need a value the scale doesn't have, add it to primitives with the -alt suffix and reference it. Never change an existing primitive.",
+      "why": "These are the last brand-specific dials. The add-only rule on primitives keeps the shared scale intact so other projects and the developer's tokens stay aligned.",
+      "order": 11,
+      "prerequisites": ["customize-type", "spacers-and-spacing", "effects"],
+      "plugin_checks": [],
+      "source": ["carson-notes"]
+    },
+    {
+      "id": "publish-link-and-verify",
+      "track": "setup",
+      "title": "Publish, link, and verify",
+      "slug": "publish-link-and-verify",
+      "summary": "Publish the boilerplate as a library, enable it in a Working file alongside the Styles file, and confirm modes and components come through cleanly. Standing up a working brand boilerplate end to end is the setup track's finish line.",
+      "why": "A boilerplate only earns its keep once a Working file consumes it cleanly. Proving that end to end is how a designer shows she can set one up independently, which is the goal for this track.",
+      "order": 12,
+      "prerequisites": ["customize-spacing-and-effects"],
+      "plugin_checks": [],
+      "source": ["carson-notes"]
+    }
+  ]
+}
