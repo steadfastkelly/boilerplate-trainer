@@ -1,0 +1,47 @@
+@import "../styles/tokens.css";
+@import "tailwindcss";
+
+@theme inline {
+  --color-bone: var(--ti-bone);
+  --color-paper: var(--ti-paper);
+  --color-cream: var(--ti-cream);
+  --color-sand: var(--ti-sand);
+  --color-ink: var(--ti-ink);
+  --color-ink-soft: var(--ti-ink-soft);
+  --color-ocean: var(--ti-ocean);
+  --color-harakeke: var(--ti-harakeke);
+  --color-terracotta: var(--ti-terracotta);
+  --color-saffron: var(--ti-saffron);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-weight-display-normal: var(--fw-display);
+  --leading-display: var(--lh-display);
+  --tracking-normal: 0;
+  --spacing-container: var(--container-pad);
+  --container-container: var(--container-max);
+  --radius-card: var(--radius-lg);
+  --radius-control: var(--radius-pill);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
