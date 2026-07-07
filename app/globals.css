@@ -18,8 +18,6 @@
   --font-weight-display-normal: var(--fw-display);
   --leading-display: var(--lh-display);
   --tracking-normal: 0;
-  --spacing-container: var(--container-pad);
-  --container-container: var(--container-max);
   --radius-card: var(--radius-lg);
   --radius-control: var(--radius-pill);
 }
