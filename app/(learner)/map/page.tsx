@@ -318,7 +318,7 @@ export default async function MapPage() {
                         {concept.statusLabel}
                       </span>
                     </div>
-                    <h3 className="text-[14px] font-medium leading-[1.2] tracking-normal">
+                    <h3 className="text-xs font-medium leading-[1.25] tracking-normal">
                       {concept.title}
                     </h3>
                   </div>
