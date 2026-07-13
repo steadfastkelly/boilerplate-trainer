@@ -24,6 +24,20 @@ export async function requestSignIn(formData: FormData) {
   });
 
   if (error) {
+    const message = error.message.toLowerCase();
+
+    if (message.includes("rate") || message.includes("security purposes")) {
+      redirect("/login?error=wait");
+    }
+
+    if (message.includes("not authorized")) {
+      redirect("/login?error=email-auth");
+    }
+
+    if (message.includes("redirect")) {
+      redirect("/login?error=redirect");
+    }
+
     redirect("/login?error=send");
   }
 

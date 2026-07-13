@@ -101,6 +101,8 @@ as $$
   );
 $$;
 
+revoke all on function is_author() from anon, authenticated;
+
 -- ---------- Signup trigger: create a profile for every new user ----------
 create or replace function handle_new_user()
 returns trigger
@@ -114,6 +116,8 @@ begin
   return new;
 end;
 $$;
+
+revoke all on function handle_new_user() from anon, authenticated;
 
 create trigger on_auth_user_created
   after insert on auth.users
