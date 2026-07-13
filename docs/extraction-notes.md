@@ -20,6 +20,7 @@ Every claim below is tagged so an author can trust or challenge it.
 - `[carson]` from Carson's Boilerplate 5.0 presenter notes
 - `[deck]` from the AutoLayout Structure & Naming training deck
 - `[kelly]` from the interview in this session
+- `[qapel]` from the approved Q'Apel reference case study: Styles, Boilerplate, Website For Dev, live site, and attached site code
 - `[NC]` needs confirmation, not yet verified against the current file
 
 ## Traversal record
@@ -46,6 +47,34 @@ Skipped, on purpose:
 
 Not yet pulled: per-component screenshots and the full variable tables. Those come during lesson generation, not for the concept map.
 
+## Q'Apel reference case
+
+Kelly approved Q'Apel as the reference case study on 2026-07-13. It should explain the real-world why behind the course, while the learner still practices in the selected boilerplate practice file. `[kelly]` `[qapel]`
+
+Q'Apel source material inspected:
+
+- Q'Apel Styles: `LQzpd6xke7IyRLz4Slxaa1`
+- Q'Apel Boilerplate v5.0: `VwX3P7qLCRDsbhe0YV1Qao`
+- Q'Apel Website For Dev: `NY8nldSJaZD8tKbJOChQsa`
+- Live site: `https://qapelmedical.com/`
+- Attached website files: `/Users/steadfast/Downloads/qapelmedical-com.zip`
+
+Figma structure observed:
+
+- Styles file: Overview, Logos, Icons. `[qapel]`
+- Boilerplate Working page: `start here`, `structure`, `components`, `effects`. Components include text, buttons, icons, and spacer. Effects include layer blur, background blur, shadows, and glass. `[qapel]`
+- Website For Dev page: Home, Technology, About, Leadership, Products, Case Examples, Contact, Resources, News, Exports. `[qapel]`
+
+Code bridge observed in the shipped site files:
+
+- Spacing and size classes: `gap-s6`, `py-s13`, `size-s9`. `[qapel]`
+- Type classes: `t-h2-alt`, `t-ui-b-lg`, `t-p-lg`. `[qapel]`
+- Button classes: `btn`, `btn-corporate`, `btn--lg`. `[qapel]`
+- Icon assets: `icon-ui-arrow-right-white-16px`, `icon-social-linkedin-white`. `[qapel]`
+- Effect classes: `blur-13xl`, `blur-glow`. `[qapel]`
+
+This case strengthens the first six using-track concepts. It proves that the system is not abstract training material. The same naming logic appears in a shipped website.
+
 ## Pages
 
 | ID | Name | Purpose observed |
@@ -67,6 +96,8 @@ Each module page follows one layout: header, intro with a one-line thesis, then 
 The reason the boilerplate exists: Steadfast designs in Figma and builds in Craft CMS, and the boilerplate makes that handoff close to 1:1. `[slab]` `[kelly]` A designed section becomes fillable content fields in Craft, and structured Figma is what keeps that translation clean. `[slab]`
 
 The handoff is human, not automated. The developer keeps a matching boilerplate in code, turns on guides in Figma (Shift+G), reads a spacer's name, size, and bound variable, and picks the equivalent CSS class or token. `[kelly]` So the designer's real job is to name and structure precisely, because a person on the other side reads it.
+
+Q'Apel is the reference proof. Its Styles file, Boilerplate file, Website For Dev file, live site, and code export show the same chain from system naming to shipped pages. `[qapel]`
 
 Origin: a former creative director obsessed over the spacing between every element down to the pixel. The system was built so a developer could match the design without that person reviewing every detail. `[kelly]` The Welcome page hints at this ("no more pixel-nudging debates") but frames the why generically as HTML and CSS, and never names Craft. `[MCP]` That is a teachability gap on page 00.
 

@@ -10,6 +10,7 @@ These already exist in this repo and are the ground truth for the app's content 
 - `docs/concept-map.json` — the 12 teachable concepts, two tracks, with prerequisites. This is the app's seed content.
 - `docs/concept-map-review.md` — the plain-language version.
 - `docs/extraction-notes.md` — what was pulled from the Figma boilerplate, with sources and open questions.
+- `docs/qapel-reference-case-study.md` — the approved real-world case study. Q'Apel shows how Styles, Boilerplate, Website design, and shipped code connect. Use it to explain why the system matters, not as the learner's main practice file.
 - `styles/two-islands-design.zip` — the visual design system. Use it for all styling.
 
 ## What the app does
@@ -17,6 +18,8 @@ These already exist in this repo and are the ground truth for the app's content 
 A learner logs in with their Steadfast email, sets a one-time preference for how they want concepts explained first, works through a map of concepts, and completes each concept by doing a hands-on exercise in a practice copy of the real Figma boilerplate. A concept is only done when the exercise is done. The final concept is a capstone: rebuild a reference design using only boilerplate components until the Boilerplate Assistant plugin reports zero structural errors. Authors (Kelly, Kayla) edit lesson content, review submissions, and watch team progress.
 
 The single metric to optimize: time from a designer's first login to a verified capstone. Prefer the choice that gets a designer doing real work in the file sooner.
+
+Q'Apel is the reference case study for the course. It should appear in lesson reasoning and examples because it proves the chain from Figma system files to shipped code. It does not replace the practice file unless Kelly changes that decision later.
 
 ## Fixed technical decisions (do not substitute)
 
@@ -120,7 +123,7 @@ DoD: a `steadfast.design` email can sign in and out, the session persists across
 
 ### Phase 3 — Seed the concept map
 Goal: the 12 concepts live in the database.
-Steps: write `scripts/seed-concepts.ts` that reads `docs/concept-map.json`, inserts one `boilerplate_versions` row (from the file's `figma_file_key` and `version_label`, marked current), and inserts all 12 `concepts` with every field, including `prerequisites`, `why`, `track`, and `plugin_checks`. Make it idempotent, so running it again updates rather than duplicates.
+Steps: write `scripts/seed-concepts.ts` that reads `docs/concept-map.json`, inserts one `boilerplate_versions` row (from the file's `figma_file_key` and `version_label`, marked current), and inserts all 12 `concepts` with every field, including `prerequisites`, `why`, `track`, and `plugin_checks`. The seeded concepts should preserve Q'Apel as a reference case source where the JSON names it. Make it idempotent, so running it again updates rather than duplicates.
 DoD: the `concepts` table has 12 rows matching the JSON, and re-running the script does not create duplicates.
 
 ### Phase 4 — The course map

@@ -1,6 +1,6 @@
 # Concept Map Review
 
-Plain-language walkthrough of [concept-map.json](concept-map.json) for your review. This version reflects your four answers: defer to Carson on the spacer rule, the resolved ascender-offset, a tighter concept count, and your two operating principles woven through everything.
+Plain-language walkthrough of [concept-map.json](concept-map.json) for your review. This version reflects your four answers, plus the approved Q'Apel reference case study. Q'Apel explains the real-world why. It does not replace the learner's practice file.
 
 ## The shape
 
@@ -17,12 +17,12 @@ You said designers must always keep the boilerplate's components intact and alwa
 
 I anchored the using track to the file's own modules, which your team already treats as digestible, and folded the fundamentals the file underplays into those modules rather than adding concepts.
 
-1. **Why the boilerplate exists** opens the course and carries the whole weight of converting the freestyle skeptic. It introduces the Craft handoff and the two principles.
-2. **AutoLayout and page structure** is the foundation: build in AutoLayout, start in a width frame, nest and name so it reads as code. This absorbs what were four separate concepts before (AutoLayout, structure, naming, breakpoints), because to a designer they are one act: building the page skeleton.
-3. **Spacers and spacing** covers the scale, variables, and the padding question.
-4. **Typography** covers text components and the ascender-offset.
-5. **Buttons and icons.**
-6. **Effects.**
+1. **Why the boilerplate exists** opens the course and carries the whole weight of converting the freestyle skeptic. It introduces the Craft handoff, the Q'Apel proof, and the two principles.
+2. **AutoLayout and page structure** is the foundation: build in AutoLayout, start in a width frame, nest and name so it reads as code. Q'Apel shows this at full website scale.
+3. **Spacers and spacing** covers the scale, variables, and the padding question. Q'Apel shows the same idea in code classes like `gap-s6` and `py-s13`.
+4. **Typography** covers text components and the ascender-offset. Q'Apel shows the type contract in classes like `t-h2-alt` and `t-ui-b-lg`.
+5. **Buttons and icons** covers `button-base`, button sizing, and icon families. Q'Apel shows the matching code and asset names.
+6. **Effects** covers the approved effect styles. Q'Apel shows shipped blur and glow classes.
 7. **Building without breaking** is where keeping components intact gets taught directly, along with the escape hatches (disconnect a variable, comment the break, zero-height containers).
 8. **Capstone** pulls it together, gated on the checks.
 
@@ -49,7 +49,7 @@ The capstone requires all six at once.
 
 ## What's still open before lessons (not before map approval)
 
-From the extraction notes: the exact spacer rule to read off Carson's components, whether Nucleo is still the icon source in v5.2, whether this Playground file is the practice copy or the master, and the contents of page 06 (the Challenge), which I have not walked. None block approving the map. Each blocks a specific exercise, and I'll clear them when we get there.
+From the extraction notes: the exact spacer rule to read off Carson's components, whether Nucleo is still the icon source in v5.2, whether this Playground file is the practice copy or the master, and the contents of page 06 (the Challenge), which I have not walked. None block approving the map. Each blocks a specific exercise, and I'll clear them when we get there. Q'Apel is now resolved as reference-only source material.
 
 ## Your move
 
