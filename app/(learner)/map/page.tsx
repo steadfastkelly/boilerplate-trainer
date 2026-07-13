@@ -318,9 +318,9 @@ export default async function MapPage() {
                         {concept.statusLabel}
                       </span>
                     </div>
-                    <h3 className="text-xs font-medium leading-[1.25] tracking-normal">
+                    <div className="text-[10px] font-medium leading-[1.25] tracking-normal">
                       {concept.title}
-                    </h3>
+                    </div>
                   </div>
 
                   {concept.state === "locked" ? (
