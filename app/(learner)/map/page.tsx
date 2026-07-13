@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { signOut } from "./actions";
 import { createClient } from "@/lib/supabase/server";
@@ -303,7 +304,7 @@ export default async function MapPage() {
 
               {[...usingConcepts, ...setupConcepts].map((concept) => (
                 <article
-                  className={`absolute flex h-[148px] w-[196px] flex-col rounded-[var(--radius-md)] border-2 p-3 shadow-sm ${stateStyles[concept.state]}`}
+                  className={`absolute flex h-[148px] w-[196px] flex-col rounded-[var(--radius-md)] border-2 p-3 shadow-sm transition ${concept.state === "locked" ? "" : "hover:-translate-y-0.5 hover:shadow-md"} ${stateStyles[concept.state]}`}
                   data-map-card
                   key={concept.slug}
                   style={{ left: concept.x, top: concept.y }}
@@ -338,6 +339,14 @@ export default async function MapPage() {
                       {concept.summary}
                     </p>
                   )}
+
+                  {concept.state !== "locked" ? (
+                    <Link
+                      aria-label={`Open ${concept.title}`}
+                      className="absolute inset-0 rounded-[var(--radius-md)] focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                      href={`/concept/${concept.slug}`}
+                    />
+                  ) : null}
                 </article>
               ))}
             </div>
