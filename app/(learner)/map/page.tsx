@@ -29,19 +29,24 @@ type PositionedConcept = ConceptRow & {
   y: number;
 };
 
+const cardWidth = 170;
+const cardHeight = 128;
+const mapWidth = 1440;
+const mapHeight = 820;
+
 const nodePositions: Record<string, { x: number; y: number }> = {
-  "why-boilerplate-exists": { x: 40, y: 150 },
-  "autolayout-and-page-structure": { x: 320, y: 150 },
-  "spacers-and-spacing": { x: 600, y: 40 },
-  typography: { x: 880, y: 40 },
-  "buttons-and-icons": { x: 600, y: 250 },
-  effects: { x: 600, y: 460 },
-  "building-without-breaking": { x: 1160, y: 250 },
-  "capstone-use": { x: 1440, y: 250 },
-  "duplicate-and-set-up": { x: 320, y: 760 },
-  "customize-type": { x: 600, y: 650 },
-  "customize-spacing-and-effects": { x: 880, y: 760 },
-  "publish-link-and-verify": { x: 1160, y: 760 },
+  "why-boilerplate-exists": { x: 0, y: 170 },
+  "autolayout-and-page-structure": { x: 180, y: 170 },
+  "spacers-and-spacing": { x: 360, y: 70 },
+  typography: { x: 540, y: 70 },
+  "buttons-and-icons": { x: 360, y: 210 },
+  effects: { x: 360, y: 350 },
+  "building-without-breaking": { x: 540, y: 280 },
+  "capstone-use": { x: 720, y: 280 },
+  "duplicate-and-set-up": { x: 720, y: 620 },
+  "customize-type": { x: 900, y: 620 },
+  "customize-spacing-and-effects": { x: 1080, y: 620 },
+  "publish-link-and-verify": { x: 1260, y: 620 },
 };
 
 const stateStyles: Record<MapState, string> = {
@@ -96,13 +101,13 @@ function getStatusLabel(state: MapState) {
 }
 
 function getEdgePath(from: PositionedConcept, to: PositionedConcept) {
-  const startX = from.x + 240;
-  const startY = from.y + 76;
+  const startX = from.x + cardWidth;
+  const startY = from.y + cardHeight / 2;
   const endX = to.x;
-  const endY = to.y + 76;
+  const endY = to.y + cardHeight / 2;
   const middleX = startX + (endX - startX) / 2;
 
-  return `M ${startX} ${startY} C ${middleX} ${startY}, ${middleX} ${endY}, ${endX} ${endY}`;
+  return `M ${startX} ${startY} L ${middleX} ${startY} L ${middleX} ${endY} L ${endX} ${endY}`;
 }
 
 export default async function MapPage() {
@@ -251,7 +256,7 @@ export default async function MapPage() {
 
           <div className="grid gap-4 border-b border-[var(--border)] px-6 py-5 text-sm text-ink-soft sm:px-10 lg:grid-cols-[1fr_auto] lg:items-center">
             <p>
-              Follow the available node first. Locked concepts show the concepts they need.
+              Work left to right. Locked concepts show what they need first.
             </p>
             <div className="flex flex-wrap gap-2">
               {(["available", "locked", "in_progress", "submitted", "complete"] as MapState[]).map(
@@ -268,11 +273,11 @@ export default async function MapPage() {
           </div>
 
           <div className="overflow-x-auto px-6 py-8 sm:px-10">
-            <div className="relative h-[980px] min-w-[1700px]">
+            <div className="relative h-[820px] min-w-[1440px]">
               <div className="absolute left-0 top-0 rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
                 Using the boilerplate
               </div>
-              <div className="absolute left-0 top-[610px] rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
+              <div className="absolute left-[720px] top-[540px] rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
                 Setting up a boilerplate
               </div>
 
@@ -280,53 +285,42 @@ export default async function MapPage() {
                 aria-hidden="true"
                 className="absolute inset-0 h-full w-full"
                 focusable="false"
-                viewBox="0 0 1700 980"
+                viewBox={`0 0 ${mapWidth} ${mapHeight}`}
               >
-                <defs>
-                  <marker
-                    id="course-map-arrow"
-                    markerHeight="8"
-                    markerWidth="8"
-                    orient="auto"
-                    refX="7"
-                    refY="4"
-                  >
-                    <path d="M 0 0 L 8 4 L 0 8 z" fill="var(--ti-ink)" opacity="0.45" />
-                  </marker>
-                </defs>
                 {edges.map((edge) => (
                   <path
                     d={getEdgePath(edge.from, edge.to)}
                     fill="none"
                     key={`${edge.from.slug}-${edge.to.slug}`}
-                    markerEnd="url(#course-map-arrow)"
-                    opacity={edge.to.state === "locked" ? 0.28 : 0.6}
+                    opacity={edge.to.state === "locked" ? 0.18 : 0.38}
                     stroke="var(--ti-ink)"
-                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
                   />
                 ))}
               </svg>
 
               {[...usingConcepts, ...setupConcepts].map((concept) => (
                 <article
-                  className={`absolute flex h-[152px] w-[240px] flex-col justify-between rounded-[var(--radius-md)] border-2 p-4 shadow-sm ${stateStyles[concept.state]}`}
+                  className={`absolute flex h-[128px] w-[170px] flex-col justify-between rounded-[var(--radius-md)] border-2 p-3 shadow-sm ${stateStyles[concept.state]}`}
                   key={concept.slug}
                   style={{ left: concept.x, top: concept.y }}
                 >
-                  <div className="space-y-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <span className="font-mono text-xs text-ink-soft">
+                  <div className="space-y-2">
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="font-mono text-[11px] text-ink-soft">
                         {String(concept.order_index).padStart(2, "0")}
                       </span>
                       <span
-                        className={`shrink-0 rounded-[var(--radius-pill)] border px-2 py-1 text-[11px] font-medium leading-none ${badgeStyles[concept.state]}`}
+                        className={`shrink-0 rounded-[var(--radius-pill)] border px-2 py-1 text-[10px] font-medium leading-none ${badgeStyles[concept.state]}`}
                       >
                         {concept.statusLabel}
                       </span>
                     </div>
-                    <h2 className="text-[18px] font-medium leading-[1.15] tracking-normal">
+                    <h3 className="text-[14px] font-medium leading-[1.2] tracking-normal">
                       {concept.title}
-                    </h2>
+                    </h3>
                   </div>
 
                   {concept.state === "locked" ? (
