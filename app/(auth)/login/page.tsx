@@ -17,6 +17,7 @@ const errorMessages: Record<string, string> = {
   "email-auth": "Supabase is not allowed to email this address yet.",
   redirect: "Supabase needs this login URL added to its redirect list.",
   send: "We could not send the sign-in link. Try again.",
+  smtp: "Supabase could not send email. Check the SMTP settings.",
   wait: "Too many sign-in links were requested. Wait a few minutes, then try again.",
 };
 

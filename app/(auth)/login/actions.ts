@@ -26,12 +26,20 @@ export async function requestSignIn(formData: FormData) {
   if (error) {
     const message = error.message.toLowerCase();
 
+    if (error.status && error.status >= 500) {
+      redirect("/login?error=smtp");
+    }
+
     if (message.includes("rate") || message.includes("security purposes")) {
       redirect("/login?error=wait");
     }
 
     if (message.includes("not authorized")) {
       redirect("/login?error=email-auth");
+    }
+
+    if (message.includes("magic link email") || message === "{}") {
+      redirect("/login?error=smtp");
     }
 
     if (message.includes("redirect")) {
