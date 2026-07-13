@@ -29,24 +29,24 @@ type PositionedConcept = ConceptRow & {
   y: number;
 };
 
-const cardWidth = 170;
-const cardHeight = 128;
-const mapWidth = 1440;
-const mapHeight = 820;
+const cardWidth = 196;
+const cardHeight = 148;
+const mapWidth = 1666;
+const mapHeight = 900;
 
 const nodePositions: Record<string, { x: number; y: number }> = {
-  "why-boilerplate-exists": { x: 0, y: 170 },
-  "autolayout-and-page-structure": { x: 180, y: 170 },
-  "spacers-and-spacing": { x: 360, y: 70 },
-  typography: { x: 540, y: 70 },
-  "buttons-and-icons": { x: 360, y: 210 },
-  effects: { x: 360, y: 350 },
-  "building-without-breaking": { x: 540, y: 280 },
-  "capstone-use": { x: 720, y: 280 },
-  "duplicate-and-set-up": { x: 720, y: 620 },
-  "customize-type": { x: 900, y: 620 },
-  "customize-spacing-and-effects": { x: 1080, y: 620 },
-  "publish-link-and-verify": { x: 1260, y: 620 },
+  "why-boilerplate-exists": { x: 0, y: 180 },
+  "autolayout-and-page-structure": { x: 210, y: 180 },
+  "spacers-and-spacing": { x: 420, y: 70 },
+  typography: { x: 630, y: 70 },
+  "buttons-and-icons": { x: 420, y: 235 },
+  effects: { x: 420, y: 400 },
+  "building-without-breaking": { x: 630, y: 305 },
+  "capstone-use": { x: 840, y: 305 },
+  "duplicate-and-set-up": { x: 840, y: 700 },
+  "customize-type": { x: 1050, y: 700 },
+  "customize-spacing-and-effects": { x: 1260, y: 700 },
+  "publish-link-and-verify": { x: 1470, y: 700 },
 };
 
 const stateStyles: Record<MapState, string> = {
@@ -273,11 +273,11 @@ export default async function MapPage() {
           </div>
 
           <div className="overflow-x-auto px-6 py-8 sm:px-10">
-            <div className="relative h-[820px] min-w-[1440px]">
+            <div className="relative h-[900px] min-w-[1666px]">
               <div className="absolute left-0 top-0 rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
                 Using the boilerplate
               </div>
-              <div className="absolute left-[720px] top-[540px] rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
+              <div className="absolute left-[840px] top-[620px] rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
                 Setting up a boilerplate
               </div>
 
@@ -303,11 +303,12 @@ export default async function MapPage() {
 
               {[...usingConcepts, ...setupConcepts].map((concept) => (
                 <article
-                  className={`absolute flex h-[128px] w-[170px] flex-col justify-between rounded-[var(--radius-md)] border-2 p-3 shadow-sm ${stateStyles[concept.state]}`}
+                  className={`absolute flex h-[148px] w-[196px] flex-col rounded-[var(--radius-md)] border-2 p-3 shadow-sm ${stateStyles[concept.state]}`}
+                  data-map-card
                   key={concept.slug}
                   style={{ left: concept.x, top: concept.y }}
                 >
-                  <div className="space-y-2">
+                  <div>
                     <div className="flex items-start justify-between gap-2">
                       <span className="font-mono text-[11px] text-ink-soft">
                         {String(concept.order_index).padStart(2, "0")}
@@ -318,20 +319,22 @@ export default async function MapPage() {
                         {concept.statusLabel}
                       </span>
                     </div>
-                    <div className="text-[10px] font-medium leading-[1.25] tracking-normal">
+                    <h2 className="mt-2 !text-[13px] font-semibold !leading-[1.2] tracking-normal [overflow-wrap:anywhere]">
                       {concept.title}
-                    </div>
+                    </h2>
                   </div>
 
                   {concept.state === "locked" ? (
-                    <p className="line-clamp-2 text-xs leading-normal text-ink-soft">
-                      Waiting on:{" "}
+                    <p className="mt-auto pt-2 text-[10px] font-medium leading-[1.3] text-ink-soft">
+                      Needs{" "}
                       {concept.unmetPrerequisites
-                        .map((slug) => conceptBySlug.get(slug)?.title || slug)
+                        .map((slug) => conceptBySlug.get(slug)?.order_index)
+                        .filter((orderIndex) => orderIndex !== undefined)
+                        .map((orderIndex) => String(orderIndex).padStart(2, "0"))
                         .join(", ")}
                     </p>
                   ) : (
-                    <p className="line-clamp-2 text-xs leading-normal text-ink-soft">
+                    <p className="mt-auto line-clamp-2 pt-2 text-[10px] leading-[1.3] text-ink-soft">
                       {concept.summary}
                     </p>
                   )}
