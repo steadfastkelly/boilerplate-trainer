@@ -250,6 +250,14 @@ export default async function MapPage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-4">
+              {profile.role === "author" ? (
+                <Link
+                  className="inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-[var(--border-strong)] bg-bone px-4 text-sm font-medium text-ocean transition hover:border-ocean focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                  href="/author"
+                >
+                  Author dashboard
+                </Link>
+              ) : null}
               <Link
                 className="inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-[var(--border-strong)] bg-bone px-4 text-sm font-medium text-ocean transition hover:border-ocean focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
                 href="/settings"

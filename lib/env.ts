@@ -16,3 +16,13 @@ export function isAllowedEmail(email: string) {
   const domain = getAllowedEmailDomain().toLowerCase();
   return email.trim().toLowerCase().endsWith(`@${domain}`);
 }
+
+export function getBooleanEnv(name: string, fallback = false) {
+  const value = process.env[name];
+
+  if (!value) {
+    return fallback;
+  }
+
+  return ["1", "true", "yes", "on"].includes(value.trim().toLowerCase());
+}

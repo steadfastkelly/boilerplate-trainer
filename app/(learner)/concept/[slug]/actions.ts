@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { getBooleanEnv } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 
 function submissionUrl(slug: string, state: string) {
@@ -58,6 +59,7 @@ export async function submitExercise(formData: FormData) {
       user_id: user.id,
       concept_id: conceptId,
       figma_link: url.toString(),
+      review_status: getBooleanEnv("AUTO_COMPLETE_ON_SUBMIT") ? "verified" : "pending",
     })
     .select("id")
     .single();
@@ -66,12 +68,13 @@ export async function submitExercise(formData: FormData) {
     redirect(submissionUrl(slug, "error"));
   }
 
+  const autoComplete = getBooleanEnv("AUTO_COMPLETE_ON_SUBMIT");
   const { error: progressError } = await supabase.from("progress").upsert(
     {
       user_id: user.id,
       concept_id: conceptId,
-      exercise_status: "submitted",
-      completed_at: null,
+      exercise_status: autoComplete ? "verified" : "submitted",
+      completed_at: autoComplete ? new Date().toISOString() : null,
     },
     { onConflict: "user_id,concept_id" },
   );
