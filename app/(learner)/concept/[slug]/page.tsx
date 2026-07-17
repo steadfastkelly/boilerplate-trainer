@@ -136,6 +136,25 @@ function submissionMessage(state: string | undefined) {
   }
 }
 
+function CapstoneInstructions() {
+  return (
+    <div className="space-y-4">
+      <p className="ti-p mb-0">
+        Rebuild the reference design in the practice file using only boilerplate components.
+        Keep the page inside AutoLayout and use the boilerplate spacers, text components,
+        buttons, icons, and defined effects.
+      </p>
+      <div className="border border-[var(--border-strong)] bg-paper p-5">
+        <h3 className="!text-base font-semibold !leading-normal">Pass condition</h3>
+        <p className="ti-p mt-2 mb-0">
+          Run the Boilerplate Assistant on your frame. Submit the frame link when it reports 0
+          structural errors.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default async function ConceptPage({
   params,
   searchParams,
@@ -166,7 +185,7 @@ export default async function ConceptPage({
 
   const { data: concept } = await supabase
     .from("concepts")
-    .select("id, slug, title, summary, why, order_index, prerequisites")
+    .select("id, slug, title, summary, why, track, order_index, prerequisites, plugin_checks")
     .eq("version_id", version.id)
     .eq("slug", slug)
     .maybeSingle();
@@ -235,6 +254,7 @@ export default async function ConceptPage({
   const firstOpenModality = visibleModalities[0];
   const practiceUrl = getPracticeUrl(getRequiredEnv("PRACTICE_FILE_URL"), exercise);
   const notice = submissionMessage(submission);
+  const isUsingCapstone = concept.track === "using" && concept.slug === "capstone-use";
 
   return (
     <main className="min-h-screen bg-bone text-ink">
@@ -245,7 +265,7 @@ export default async function ConceptPage({
               Back to course map
             </Link>
             <p className="ti-eyebrow mt-8">
-              Concept {String(concept.order_index).padStart(2, "0")}
+              {isUsingCapstone ? "Using track capstone" : `Concept ${String(concept.order_index).padStart(2, "0")}`}
             </p>
             <h1 className="mt-4 max-w-[900px] font-display text-[clamp(36px,6vw,72px)] font-display-normal leading-display tracking-normal">
               {concept.title}
@@ -320,7 +340,9 @@ export default async function ConceptPage({
             </h2>
 
             <div className="mt-6 max-w-[820px] space-y-5">
-              {exercise ? renderContent(exercise.content, exercise.id) : (
+              {exercise ? renderContent(exercise.content, exercise.id) : isUsingCapstone ? (
+                <CapstoneInstructions />
+              ) : (
                 <p className="ti-p mb-0">
                   Exercise instructions are still being prepared. Open the practice file, complete
                   the concept work, then submit a link to your finished frame.

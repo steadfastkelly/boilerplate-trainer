@@ -214,6 +214,8 @@ export default async function MapPage() {
   const positionedBySlug = new Map(positionedConcepts.map((concept) => [concept.slug, concept]));
   const usingConcepts = positionedConcepts.filter((concept) => concept.track === "using");
   const setupConcepts = positionedConcepts.filter((concept) => concept.track === "setup");
+  const completedUsingCount = usingConcepts.filter((concept) => concept.state === "complete").length;
+  const usingTrackComplete = positionedBySlug.get("capstone-use")?.state === "complete";
   const edges = positionedConcepts.flatMap((concept) =>
     concept.prerequisites
       .map((prerequisiteSlug) => {
@@ -277,7 +279,9 @@ export default async function MapPage() {
 
           <div className="grid gap-4 border-b border-[var(--border)] px-6 py-5 text-sm text-ink-soft sm:px-10 lg:grid-cols-[1fr_auto] lg:items-center">
             <p>
-              Work left to right. Locked concepts show what they need first.
+              {usingTrackComplete
+                ? "Using track complete. The setup track is open."
+                : `Work left to right. ${completedUsingCount} of ${usingConcepts.length} Using concepts are complete.`}
             </p>
             <div className="flex flex-wrap gap-2">
               {(["available", "locked", "in_progress", "submitted", "complete"] as MapState[]).map(
@@ -292,6 +296,14 @@ export default async function MapPage() {
               )}
             </div>
           </div>
+
+          {usingTrackComplete ? (
+            <div className="border-b border-[var(--border)] bg-[color-mix(in_srgb,var(--ti-harakeke)_12%,var(--ti-paper))] px-6 py-5 sm:px-10">
+              <p className="text-sm font-medium text-ink">
+                Capstone verified. You can now start setting up a boilerplate.
+              </p>
+            </div>
+          ) : null}
 
           <div className="overflow-x-auto px-6 py-8 sm:px-10">
             <div className="relative h-[900px] min-w-[1666px]">
