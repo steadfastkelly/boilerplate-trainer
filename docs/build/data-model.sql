@@ -50,6 +50,7 @@ create table profiles (
   user_id          uuid primary key references auth.users(id) on delete cascade,
   role             user_role not null default 'learner',
   modality_weights jsonb not null default '{"V":0.25,"A":0.25,"R":0.25,"K":0.25}',
+  preference_setup_completed boolean not null default false,
   created_at       timestamptz not null default now()
 );
 

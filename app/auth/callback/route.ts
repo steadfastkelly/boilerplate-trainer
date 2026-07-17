@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { getProfileDestination } from "@/lib/profile-destination";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
@@ -10,7 +11,11 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
-      return NextResponse.redirect(new URL("/map", request.url));
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      const destination = user ? await getProfileDestination(supabase, user.id) : "/login";
+      return NextResponse.redirect(new URL(destination, request.url));
     }
   }
 
@@ -41,8 +46,9 @@ export async function GET(request: NextRequest) {
             refresh_token: refreshToken
           })
         })
-          .then((response) => {
-            window.location.replace(response.ok ? "/map" : "/login?error=send");
+          .then(async (response) => {
+            const result = await response.json();
+            window.location.replace(response.ok ? result.destination : "/login?error=send");
           })
           .catch(() => {
             window.location.replace("/login?error=send");

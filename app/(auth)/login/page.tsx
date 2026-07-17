@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requestSignIn } from "./actions";
 import { getAllowedEmailDomain } from "@/lib/env";
+import { getProfileDestination } from "@/lib/profile-destination";
 import { createClient } from "@/lib/supabase/server";
 
 type LoginPageProps = {
@@ -28,7 +29,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   } = await supabase.auth.getUser();
 
   if (user) {
-    redirect("/map");
+    redirect(await getProfileDestination(supabase, user.id));
   }
 
   const params = await searchParams;

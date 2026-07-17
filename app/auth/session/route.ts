@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { getProfileDestination } from "@/lib/profile-destination";
 import { createClient } from "@/lib/supabase/server";
 
 type SessionPayload = {
@@ -23,5 +24,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid session" }, { status: 401 });
   }
 
-  return NextResponse.json({ ok: true });
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const destination = user ? await getProfileDestination(supabase, user.id) : "/login";
+
+  return NextResponse.json({ ok: true, destination });
 }

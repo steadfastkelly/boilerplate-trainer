@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { getProfileDestination } from "@/lib/profile-destination";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
@@ -8,7 +9,7 @@ export default async function Home() {
   } = await supabase.auth.getUser();
 
   if (user) {
-    redirect("/map");
+    redirect(await getProfileDestination(supabase, user.id));
   }
 
   redirect("/login");

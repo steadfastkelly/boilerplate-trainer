@@ -123,9 +123,13 @@ export default async function MapPage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, preference_setup_completed")
     .eq("user_id", user.id)
     .maybeSingle();
+
+  if (!profile?.preference_setup_completed) {
+    redirect("/settings?setup=1");
+  }
 
   const { data: version, error: versionError } = await supabase
     .from("boilerplate_versions")
@@ -245,14 +249,22 @@ export default async function MapPage() {
               </div>
             </div>
 
-            <form action={signOut}>
-              <button
-                className="inline-flex rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 font-body text-sm font-medium text-bone transition hover:bg-bone hover:text-ink"
-                type="submit"
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                className="inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-[var(--border-strong)] bg-bone px-4 text-sm font-medium text-ocean transition hover:border-ocean focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                href="/settings"
               >
-                Sign out
-              </button>
-            </form>
+                Explanation settings
+              </Link>
+              <form action={signOut}>
+                <button
+                  className="inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 font-body text-sm font-medium text-bone transition hover:bg-bone hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                  type="submit"
+                >
+                  Sign out
+                </button>
+              </form>
+            </div>
           </div>
 
           <div className="grid gap-4 border-b border-[var(--border)] px-6 py-5 text-sm text-ink-soft sm:px-10 lg:grid-cols-[1fr_auto] lg:items-center">
