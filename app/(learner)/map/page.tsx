@@ -305,7 +305,66 @@ export default async function MapPage() {
             </div>
           ) : null}
 
-          <div className="overflow-x-auto px-6 py-8 sm:px-10">
+          <div className="px-6 py-8 sm:px-10 lg:hidden">
+            <div className="space-y-8">
+              {[
+                { label: "Using the boilerplate", concepts: usingConcepts },
+                { label: "Setting up a boilerplate", concepts: setupConcepts },
+              ].map((group) => (
+                <section className="space-y-3" key={group.label}>
+                  <h2 className="rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
+                    {group.label}
+                  </h2>
+                  <div className="space-y-3">
+                    {group.concepts.map((concept) => (
+                      <article
+                        className={`rounded-[var(--radius-md)] border-2 p-4 shadow-sm ${stateStyles[concept.state]}`}
+                        key={concept.slug}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <span className="font-mono text-xs text-ink-soft">
+                            {String(concept.order_index).padStart(2, "0")}
+                          </span>
+                          <span
+                            className={`shrink-0 rounded-[var(--radius-pill)] border px-2 py-1 text-[10px] font-medium leading-none ${badgeStyles[concept.state]}`}
+                          >
+                            {concept.statusLabel}
+                          </span>
+                        </div>
+                        <h3 className="mt-3 !text-base font-semibold !leading-tight">
+                          {concept.title}
+                        </h3>
+                        {concept.state === "locked" ? (
+                          <p className="mt-3 text-sm font-medium text-ink-soft">
+                            Needs{" "}
+                            {concept.unmetPrerequisites
+                              .map((slug) => conceptBySlug.get(slug)?.order_index)
+                              .filter((orderIndex) => orderIndex !== undefined)
+                              .map((orderIndex) => String(orderIndex).padStart(2, "0"))
+                              .join(", ")}
+                          </p>
+                        ) : (
+                          <>
+                            <p className="mt-3 text-sm leading-normal text-ink-soft">
+                              {concept.summary}
+                            </p>
+                            <Link
+                              className="mt-4 inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-ink bg-ink px-4 text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-paper hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                              href={`/concept/${concept.slug}`}
+                            >
+                              Open concept
+                            </Link>
+                          </>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
+          </div>
+
+          <div className="hidden overflow-x-auto px-6 py-8 sm:px-10 lg:block">
             <div className="relative h-[900px] min-w-[1666px]">
               <div className="absolute left-0 top-0 rounded-[var(--radius-pill)] bg-ink px-4 py-2 text-xs font-medium uppercase tracking-[0.18em] text-bone">
                 Using the boilerplate

@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed:concepts": "node scripts/seed-concepts.ts"
+    "seed:concepts": "node scripts/seed-concepts.ts",
+    "seed:sample-lesson": "node scripts/seed-sample-lesson.ts"
   },
   "dependencies": {
     "@supabase/ssr": "latest",
