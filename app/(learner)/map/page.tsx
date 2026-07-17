@@ -258,7 +258,7 @@ export default async function MapPage() {
               </Link>
               <form action={signOut}>
                 <button
-                  className="inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 font-body text-sm font-medium text-bone transition hover:bg-bone hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                  className="inline-flex min-h-11 items-center whitespace-nowrap rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 font-body text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-bone hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
                   type="submit"
                 >
                   Sign out

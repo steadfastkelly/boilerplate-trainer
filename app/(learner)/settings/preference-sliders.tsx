@@ -46,7 +46,7 @@ export function PreferenceSliders({ initialValues }: { initialValues: SliderValu
               {option.description}
             </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-[1fr_88px] sm:items-center sm:gap-4">
+          <div className="grid gap-3 sm:grid-cols-[minmax(180px,1fr)_max-content] sm:items-center sm:gap-4">
             <input
               aria-describedby={`value-${option.id}`}
               aria-label={`${option.label} priority`}
@@ -67,7 +67,7 @@ export function PreferenceSliders({ initialValues }: { initialValues: SliderValu
             />
             <output
               aria-live="polite"
-              className="rounded-[var(--radius-pill)] border border-[var(--border-strong)] bg-bone px-3 py-2 text-center text-sm font-medium tabular-nums text-ink"
+              className="inline-flex min-h-11 min-w-[104px] shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-pill)] border border-[var(--border-strong)] bg-bone px-4 py-2 text-center text-sm font-medium tabular-nums text-ink"
               htmlFor={`weight-${option.id}`}
               id={`value-${option.id}`}
             >

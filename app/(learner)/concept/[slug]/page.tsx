@@ -328,7 +328,7 @@ export default async function ConceptPage({
               )}
 
               <a
-                className="inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 text-sm font-medium text-bone transition hover:bg-paper hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean"
+                className="inline-flex min-h-11 w-fit max-w-full shrink-0 items-center justify-center whitespace-nowrap rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-paper hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
                 href={practiceUrl}
                 rel="noreferrer"
                 target="_blank"
@@ -353,7 +353,7 @@ export default async function ConceptPage({
                   type="url"
                 />
                 <button
-                  className="min-h-12 shrink-0 rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 text-sm font-medium text-bone transition hover:bg-paper hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean"
+                  className="min-h-12 shrink-0 whitespace-nowrap rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-paper hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
                   type="submit"
                 >
                   Submit for review

@@ -92,7 +92,7 @@ export default async function SettingsPage({
 
             <div className="mt-8 flex flex-wrap items-center gap-4 border-t border-[var(--border)] pt-8">
               <button
-                className="min-h-12 rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 text-sm font-medium text-bone transition hover:bg-paper hover:text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                className="min-h-12 whitespace-nowrap rounded-[var(--radius-pill)] border border-ink bg-ink px-6 py-3 text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-paper hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
                 type="submit"
               >
                 Save preferences
