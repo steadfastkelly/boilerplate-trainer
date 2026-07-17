@@ -194,36 +194,6 @@ export default async function ConceptPage({
     notFound();
   }
 
-  const { data: versionConcepts } = await supabase
-    .from("concepts")
-    .select("id, slug")
-    .eq("version_id", version.id);
-  const conceptIds = (versionConcepts || []).map((item) => item.id);
-  const { data: progressRows } = conceptIds.length
-    ? await supabase
-        .from("progress")
-        .select("concept_id, exercise_status")
-        .eq("user_id", user.id)
-        .in("concept_id", conceptIds)
-    : { data: [] };
-  const completedIds = new Set(
-    (progressRows || [])
-      .filter((item) => item.exercise_status === "verified")
-      .map((item) => item.concept_id),
-  );
-  const completedSlugs = new Set(
-    (versionConcepts || [])
-      .filter((item) => completedIds.has(item.id))
-      .map((item) => item.slug),
-  );
-  const isLocked = concept.prerequisites.some(
-    (prerequisite: string) => !completedSlugs.has(prerequisite),
-  );
-
-  if (isLocked) {
-    redirect("/map");
-  }
-
   const [{ data: profile }, { data: assetRows }, { data: latestSubmission }] = await Promise.all([
     supabase.from("profiles").select("modality_weights").eq("user_id", user.id).maybeSingle(),
     supabase

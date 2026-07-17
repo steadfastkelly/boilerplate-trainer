@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 
 type ConceptTrack = "using" | "setup";
 type ExerciseStatus = "not_started" | "in_progress" | "submitted" | "verified";
-type MapState = "available" | "locked" | "in_progress" | "submitted" | "complete";
+type MapState = "available" | "in_progress" | "submitted" | "complete";
 
 type ConceptRow = {
   id: string;
@@ -25,7 +25,6 @@ type ProgressRow = {
 type PositionedConcept = ConceptRow & {
   state: MapState;
   statusLabel: string;
-  unmetPrerequisites: string[];
   x: number;
   y: number;
 };
@@ -52,7 +51,6 @@ const nodePositions: Record<string, { x: number; y: number }> = {
 
 const stateStyles: Record<MapState, string> = {
   available: "border-ink bg-paper text-ink",
-  locked: "border-[var(--border)] bg-cream text-ink-soft opacity-75",
   in_progress: "border-ocean bg-paper text-ink",
   submitted: "border-saffron bg-paper text-ink",
   complete: "border-harakeke bg-[color-mix(in_srgb,var(--ti-harakeke)_12%,var(--ti-paper))] text-ink",
@@ -60,19 +58,14 @@ const stateStyles: Record<MapState, string> = {
 
 const badgeStyles: Record<MapState, string> = {
   available: "border-ink bg-ink text-bone",
-  locked: "border-[var(--border-strong)] bg-bone text-ink-soft",
   in_progress: "border-ocean bg-ocean text-bone",
   submitted: "border-saffron bg-saffron text-ink",
   complete: "border-harakeke bg-harakeke text-bone",
 };
 
-function getState(progress: ExerciseStatus | undefined, unmetPrerequisites: string[]): MapState {
+function getState(progress: ExerciseStatus | undefined): MapState {
   if (progress === "verified") {
     return "complete";
-  }
-
-  if (unmetPrerequisites.length > 0) {
-    return "locked";
   }
 
   if (progress === "submitted") {
@@ -90,8 +83,6 @@ function getStatusLabel(state: MapState) {
   switch (state) {
     case "available":
       return "Available";
-    case "locked":
-      return "Locked";
     case "in_progress":
       return "In progress";
     case "submitted":
@@ -184,18 +175,8 @@ export default async function MapPage() {
       progress.exercise_status,
     ]),
   );
-  const conceptBySlug = new Map(conceptRows.map((concept) => [concept.slug, concept]));
-  const completedSlugs = new Set(
-    conceptRows
-      .filter((concept) => progressByConceptId.get(concept.id) === "verified")
-      .map((concept) => concept.slug),
-  );
-
   const positionedConcepts = conceptRows.map((concept) => {
-    const unmetPrerequisites = concept.prerequisites.filter(
-      (prerequisite) => !completedSlugs.has(prerequisite),
-    );
-    const state = getState(progressByConceptId.get(concept.id), unmetPrerequisites);
+    const state = getState(progressByConceptId.get(concept.id));
     const fallbackPosition = {
       x: 40 + ((concept.order_index - 1) % 4) * 280,
       y: concept.track === "using" ? 150 : 760,
@@ -207,7 +188,6 @@ export default async function MapPage() {
       ...nodePositions[concept.slug],
       state,
       statusLabel: getStatusLabel(state),
-      unmetPrerequisites,
     };
   }) as PositionedConcept[];
 
@@ -281,10 +261,10 @@ export default async function MapPage() {
             <p>
               {usingTrackComplete
                 ? "Using track complete. The setup track is open."
-                : `Work left to right. ${completedUsingCount} of ${usingConcepts.length} Using concepts are complete.`}
+                : `Open any concept in any order. ${completedUsingCount} of ${usingConcepts.length} Using concepts are complete.`}
             </p>
             <div className="flex flex-wrap gap-2">
-              {(["available", "locked", "in_progress", "submitted", "complete"] as MapState[]).map(
+              {(["available", "in_progress", "submitted", "complete"] as MapState[]).map(
                 (state) => (
                   <span
                     className={`rounded-[var(--radius-pill)] border px-3 py-1 text-xs font-medium ${badgeStyles[state]}`}
@@ -334,28 +314,15 @@ export default async function MapPage() {
                         <h3 className="mt-3 !text-base font-semibold !leading-tight">
                           {concept.title}
                         </h3>
-                        {concept.state === "locked" ? (
-                          <p className="mt-3 text-sm font-medium text-ink-soft">
-                            Needs{" "}
-                            {concept.unmetPrerequisites
-                              .map((slug) => conceptBySlug.get(slug)?.order_index)
-                              .filter((orderIndex) => orderIndex !== undefined)
-                              .map((orderIndex) => String(orderIndex).padStart(2, "0"))
-                              .join(", ")}
-                          </p>
-                        ) : (
-                          <>
-                            <p className="mt-3 text-sm leading-normal text-ink-soft">
-                              {concept.summary}
-                            </p>
-                            <Link
-                              className="mt-4 inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-ink bg-ink px-4 text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-paper hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
-                              href={`/concept/${concept.slug}`}
-                            >
-                              Open concept
-                            </Link>
-                          </>
-                        )}
+                        <p className="mt-3 text-sm leading-normal text-ink-soft">
+                          {concept.summary}
+                        </p>
+                        <Link
+                          className="mt-4 inline-flex min-h-11 items-center rounded-[var(--radius-pill)] border border-ink bg-ink px-4 text-sm font-medium !text-[var(--ti-paper)] transition hover:bg-paper hover:!text-ink focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                          href={`/concept/${concept.slug}`}
+                        >
+                          Open concept
+                        </Link>
                       </article>
                     ))}
                   </div>
@@ -384,7 +351,7 @@ export default async function MapPage() {
                     d={getEdgePath(edge.from, edge.to)}
                     fill="none"
                     key={`${edge.from.slug}-${edge.to.slug}`}
-                    opacity={edge.to.state === "locked" ? 0.18 : 0.38}
+                    opacity="0.3"
                     stroke="var(--ti-ink)"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -395,7 +362,7 @@ export default async function MapPage() {
 
               {[...usingConcepts, ...setupConcepts].map((concept) => (
                 <article
-                  className={`absolute flex h-[148px] w-[196px] flex-col rounded-[var(--radius-md)] border-2 p-3 shadow-sm transition ${concept.state === "locked" ? "" : "hover:-translate-y-0.5 hover:shadow-md"} ${stateStyles[concept.state]}`}
+                  className={`absolute flex h-[148px] w-[196px] flex-col rounded-[var(--radius-md)] border-2 p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md ${stateStyles[concept.state]}`}
                   data-map-card
                   key={concept.slug}
                   style={{ left: concept.x, top: concept.y }}
@@ -416,28 +383,15 @@ export default async function MapPage() {
                     </h2>
                   </div>
 
-                  {concept.state === "locked" ? (
-                    <p className="mt-auto pt-2 text-[10px] font-medium leading-[1.3] text-ink-soft">
-                      Needs{" "}
-                      {concept.unmetPrerequisites
-                        .map((slug) => conceptBySlug.get(slug)?.order_index)
-                        .filter((orderIndex) => orderIndex !== undefined)
-                        .map((orderIndex) => String(orderIndex).padStart(2, "0"))
-                        .join(", ")}
-                    </p>
-                  ) : (
-                    <p className="mt-auto line-clamp-2 pt-2 text-[10px] leading-[1.3] text-ink-soft">
-                      {concept.summary}
-                    </p>
-                  )}
+                  <p className="mt-auto line-clamp-2 pt-2 text-[10px] leading-[1.3] text-ink-soft">
+                    {concept.summary}
+                  </p>
 
-                  {concept.state !== "locked" ? (
-                    <Link
-                      aria-label={`Open ${concept.title}`}
-                      className="absolute inset-0 rounded-[var(--radius-md)] focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
-                      href={`/concept/${concept.slug}`}
-                    />
-                  ) : null}
+                  <Link
+                    aria-label={`Open ${concept.title}`}
+                    className="absolute inset-0 rounded-[var(--radius-md)] focus:outline-none focus-visible:ring-4 focus-visible:ring-ocean focus-visible:ring-offset-2"
+                    href={`/concept/${concept.slug}`}
+                  />
                 </article>
               ))}
             </div>
